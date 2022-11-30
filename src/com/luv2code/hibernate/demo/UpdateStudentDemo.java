@@ -21,19 +21,27 @@ public class UpdateStudentDemo {
 
 		try {
 
+			session.beginTransaction();
+			System.out.println("update all student last name from ramini to r (vice-versa)");
+			session.createQuery("update Student set lastName='ramini'").executeUpdate();
+			session.getTransaction().commit();
+
+			// get new session.
+			session = factory.getCurrentSession();
+
 			// start a transaction
 			session.beginTransaction();
 
-			//get student id
+			// get student id
 			int studentId = 8;
-			
-			//get student from db using id
+
+			// get student from db using id
+
 			Student student = session.get(Student.class, studentId);
 			student.setLastName("koyi");
-			
+
 			// commit transaction
 			session.getTransaction().commit();
-
 			System.out.println("Done!");
 		} finally {
 			factory.close();
@@ -41,7 +49,7 @@ public class UpdateStudentDemo {
 	}
 
 	private static void displayStudents(List<Student> studentList) {
-		for(Student student : studentList) {
+		for (Student student : studentList) {
 			System.out.println(student);
 		}
 	}
