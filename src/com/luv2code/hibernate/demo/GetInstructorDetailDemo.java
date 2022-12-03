@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 
-public class CreateDemo {
+public class GetInstructorDetailDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -26,19 +26,16 @@ public class CreateDemo {
 		try {
 			session.beginTransaction();
 			
-			System.out.println("creating instrutor");
-
-			Instructor instructor =new Instructor("balaji", "ramini", "balurv1997@gmail.com");
+			int id = 2;
 			
-			System.out.println("creating instrutor detail");
-
-			InstructorDetail instructorDetail = new InstructorDetail("www.balaji.com/youtube","Love to codde");
+			InstructorDetail instructorDetail = session.get(InstructorDetail.class, id);
 			
-			instructor.setInstructorDetail(instructorDetail);
+			System.out.println("instructorDetails: "+instructorDetail);
 			
-			System.out.println("saving instrutor :\n"+instructor);
-
-			session.save(instructor);
+//			Instructor instructor = instructorDetail.getInstructor();
+//			System.out.println(Instructor);
+			
+			System.out.println("instructor is:" + instructorDetail.getInstructor());
 			
 			session.getTransaction().commit();
 			

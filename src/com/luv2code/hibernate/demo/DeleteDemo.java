@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 
-public class CreateDemo {
+public class DeleteDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -26,19 +26,18 @@ public class CreateDemo {
 		try {
 			session.beginTransaction();
 			
-			System.out.println("creating instrutor");
-
-			Instructor instructor =new Instructor("balaji", "ramini", "balurv1997@gmail.com");
+			int id = 1;
 			
-			System.out.println("creating instrutor detail");
-
-			InstructorDetail instructorDetail = new InstructorDetail("www.balaji.com/youtube","Love to codde");
+			Instructor  instructor = session.get(Instructor.class, id);
 			
-			instructor.setInstructorDetail(instructorDetail);
-			
-			System.out.println("saving instrutor :\n"+instructor);
-
-			session.save(instructor);
+			 if(instructor != null) {
+				 
+				 System.out.println("deleting "+ instructor);
+				 
+//				 note this will also delete associate "details" object
+//				 because of CASCADETYPE.ALL
+				 session.delete(instructor);
+			 }
 			
 			session.getTransaction().commit();
 			
