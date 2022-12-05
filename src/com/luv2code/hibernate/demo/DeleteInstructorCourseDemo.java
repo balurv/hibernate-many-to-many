@@ -6,10 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 
-public class DeleteInstructorDetailDemo {
+public class DeleteInstructorCourseDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -18,6 +19,7 @@ public class DeleteInstructorDetailDemo {
 				configure("hibernate.cfg.xml")
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
+				.addAnnotatedClass(Course.class)
 				.buildSessionFactory();
 
 		// create Session
@@ -26,22 +28,20 @@ public class DeleteInstructorDetailDemo {
 		try {
 			session.beginTransaction();
 			
-			int id = 1;
+			int id = 10;
 			
-			InstructorDetail instructorDetail = session.get(InstructorDetail.class, id);
+			Course course = session.get(Course.class, id);
 			
-			System.out.println("Deleting instructorDetails: "+instructorDetail);
+			session.delete(course);
 			
-//			Instructor instructor = instructorDetail.getInstructor();
-//			System.out.println(Instructor);
-			
-			System.out.println("instructor is:" + instructorDetail.getInstructor());
-			instructorDetail.getInstructor().setInstructorDetail(null);
-			session.delete(instructorDetail);
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
+			
 		} finally {
+			
+			session.close();
+			
 			factory.close();
 		}
 	}

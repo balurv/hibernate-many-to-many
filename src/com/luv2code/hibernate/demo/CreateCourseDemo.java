@@ -6,10 +6,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 
-public class DeleteInstructorDetailDemo {
+public class CreateCourseDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -18,6 +19,7 @@ public class DeleteInstructorDetailDemo {
 				configure("hibernate.cfg.xml")
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
+				.addAnnotatedClass(Course.class)
 				.buildSessionFactory();
 
 		// create Session
@@ -26,22 +28,32 @@ public class DeleteInstructorDetailDemo {
 		try {
 			session.beginTransaction();
 			
-			int id = 1;
+			System.out.println("creating a list of courses for an instructor");
 			
-			InstructorDetail instructorDetail = session.get(InstructorDetail.class, id);
+			Instructor instructor = session.get(Instructor.class, 1);
 			
-			System.out.println("Deleting instructorDetails: "+instructorDetail);
+			Course english = new Course("English");
 			
-//			Instructor instructor = instructorDetail.getInstructor();
-//			System.out.println(Instructor);
+			Course math = new Course("Math");
 			
-			System.out.println("instructor is:" + instructorDetail.getInstructor());
-			instructorDetail.getInstructor().setInstructorDetail(null);
-			session.delete(instructorDetail);
+			Course science = new Course("Science");
+			
+			instructor.add(science);
+			instructor.add(math);
+			instructor.add(english);
+			
+			session.save(english);
+			session.save(math);
+			session.save(science);
+			
+			
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
 		} finally {
+			
+			session.close();
+			
 			factory.close();
 		}
 	}

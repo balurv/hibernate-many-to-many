@@ -25,7 +25,14 @@ public class InstructorDetail {
 	@Column(name ="hobby")
 	private String hobby;
 	
-	@OneToOne(mappedBy = "instructorDetail", cascade = CascadeType.ALL)
+//	on delete of instructorDetail of given id, it will automatically delete related instructor also
+//	@OneToOne(mappedBy = "instructorDetail", cascade = CascadeType.ALL)
+	
+	
+//	deletes only instructorDetail of specified id.
+	@OneToOne(mappedBy = "instructorDetail", cascade = {CascadeType.DETACH,
+			CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	
 	private Instructor instructor;
 	
 	public Instructor getInstructor() {

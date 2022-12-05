@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
 
-public class DeleteInstructorDetailDemo {
+public class UpdateInstructorDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -28,16 +28,18 @@ public class DeleteInstructorDetailDemo {
 			
 			int id = 1;
 			
-			InstructorDetail instructorDetail = session.get(InstructorDetail.class, id);
+			Instructor instructor = session.get(Instructor.class, id);
 			
-			System.out.println("Deleting instructorDetails: "+instructorDetail);
+			System.out.println("updating instructor: "+instructor);
 			
 //			Instructor instructor = instructorDetail.getInstructor();
 //			System.out.println(Instructor);
+			InstructorDetail instructorDetail = new InstructorDetail("www.balajirv.in", "palying guitar");
+			
+			instructor.setInstructorDetail(instructorDetail);
 			
 			System.out.println("instructor is:" + instructorDetail.getInstructor());
-			instructorDetail.getInstructor().setInstructorDetail(null);
-			session.delete(instructorDetail);
+			
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
