@@ -1,6 +1,7 @@
 package com.luv2code.hibernate.demo;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,8 +10,10 @@ import org.hibernate.cfg.Configuration;
 import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
+import com.luv2code.hibernate.demo.entity.Review;
+import com.luv2code.hibernate.demo.entity.Student;
 
-public class GetInstructorCoursesDemo {
+public class DeleteCourseDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -20,6 +23,8 @@ public class GetInstructorCoursesDemo {
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
 				.addAnnotatedClass(Course.class)
+				.addAnnotatedClass(Review.class)
+				.addAnnotatedClass(Student.class)
 				.buildSessionFactory();
 
 		// create Session
@@ -28,14 +33,15 @@ public class GetInstructorCoursesDemo {
 		try {
 			session.beginTransaction();
 			
-			int id = 1;
+//			get the E course from db
+			int courseid = 13;
+			Course course = session.get(Course.class, courseid);
 			
-			Instructor instructor = session.get(Instructor.class, id);
+//			delete the course
+			System.out.println("deleting the course"+ course);
+			session.delete(course);
 			
-			System.out.println("Courses of an instructor id:"+id);
-			
-			System.out.println("courses:"+instructor.getCourse());
-			
+//			commit transaction
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");

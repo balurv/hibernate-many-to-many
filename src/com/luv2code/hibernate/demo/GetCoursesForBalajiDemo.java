@@ -1,15 +1,19 @@
 package com.luv2code.hibernate.demo;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
+import com.luv2code.hibernate.demo.entity.Review;
+import com.luv2code.hibernate.demo.entity.Student;
 
-public class DeleteDemo {
+public class GetCoursesForBalajiDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -18,6 +22,9 @@ public class DeleteDemo {
 				configure("hibernate.cfg.xml")
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
+				.addAnnotatedClass(Course.class)
+				.addAnnotatedClass(Review.class)
+				.addAnnotatedClass(Student.class)
 				.buildSessionFactory();
 
 		// create Session
@@ -26,23 +33,20 @@ public class DeleteDemo {
 		try {
 			session.beginTransaction();
 			
-			int id = 1;
+//			get the student teju from db.
+			Student balaji = session.get(Student.class, 1);
 			
-			Instructor  instructor = session.get(Instructor.class, id);
+			System.out.println("balaji student details:\n"+balaji);
 			
-			 if(instructor != null) {
-				 
-				 System.out.println("deleting "+ instructor);
-				 
-//				 note this will also delete associate "details" object
-//				 because of CASCADETYPE.ALL
-				 session.delete(instructor);
-			 }
-			
+			System.out.println("Balaji course\n"+balaji.getCourses());
+//			commit transaction
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
 		} finally {
+			
+			session.close();
+			
 			factory.close();
 		}
 	}

@@ -1,6 +1,7 @@
 package com.luv2code.hibernate.demo;
 
 import java.text.ParseException;
+import java.util.Date;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,8 +10,10 @@ import org.hibernate.cfg.Configuration;
 import com.luv2code.hibernate.demo.entity.Course;
 import com.luv2code.hibernate.demo.entity.Instructor;
 import com.luv2code.hibernate.demo.entity.InstructorDetail;
+import com.luv2code.hibernate.demo.entity.Review;
+import com.luv2code.hibernate.demo.entity.Student;
 
-public class CreateCourseDemo {
+public class AddCoursesForBalajiDemo {
 
 	public static void main(String[] args) throws ParseException {
 
@@ -20,6 +23,8 @@ public class CreateCourseDemo {
 				.addAnnotatedClass(Instructor.class)
 				.addAnnotatedClass(InstructorDetail.class)
 				.addAnnotatedClass(Course.class)
+				.addAnnotatedClass(Review.class)
+				.addAnnotatedClass(Student.class)
 				.buildSessionFactory();
 
 		// create Session
@@ -28,25 +33,26 @@ public class CreateCourseDemo {
 		try {
 			session.beginTransaction();
 			
-			System.out.println("creating a list of courses for an instructor");
+//			get the student teju from db.
+			Student balaji = session.get(Student.class, 1);
 			
-			Instructor instructor = session.get(Instructor.class, 1);
+			System.out.println("balaji student details:\n"+balaji);
+			System.out.println("balaji courses:\n"+balaji.getCourses());
 			
-			Course english = new Course("English");
+//			create more courses
+			Course rubix = new Course("rubix Cube - Learn to solve the 3X3 cube");
+			Course atari2600 = new Course("Atari 2600 - Game Development!");
 			
-			Course math = new Course("Math");
+//			add student to courses
+			rubix.addStudent(balaji);
+			atari2600.addStudent(balaji);
 			
-			Course science = new Course("Science");
+//			save the courses
+			session.save(rubix);
+			session.save(atari2600);
 			
-			instructor.add(science);
-			instructor.add(math);
-			instructor.add(english);
-			
-			session.save(english);
-			session.save(math);
-			session.save(science);
-			
-			
+			System.out.println("Balaji course\n"+balaji.getCourses());
+//			commit transaction
 			session.getTransaction().commit();
 			
 			System.out.println("Done!");
